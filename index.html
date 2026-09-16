@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catatan Keuangan Simpel</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --border-color: #dddddd;
+      --primary: #2563eb;
+      --income: #16a34a;
+      --expense: #dc2626;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f1f1f1;
+      --border-color: #333333;
+      --primary: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .wallets {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .wallet-item {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .wallet-item h4 {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .wallet-item p {
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 14px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .transaction-list {
+      list-style: none;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .tx-info h4 {
+      font-size: 14px;
+    }
+
+    .tx-info p {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .amount {
+      font-weight: bold;
+    }
+
+    .amount.pemasukan { color: var(--income); }
+    .amount.pengeluaran { color: var(--expense); }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Keuanganku</h2>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Night Mode</button>
+  </div>
+
+  <!-- Ringkasan Dompet -->
+  <div class="card">
+    <h3 style="margin-bottom: 12px; font-size: 16px;">Ringkasan Dompet</h3>
+    <div class="wallets">
+      <div class="wallet-item">
+        <h4>Cash</h4>
+        <p id="bal-cash">Rp 0</p>
+      </div>
+      <div class="wallet-item">
+        <h4>BCA</h4>
+        <p id="bal-bca">Rp 0</p>
+      </div>
+      <div class="wallet-item">
+        <h4>E-Wallet</h4>
+        <p id="bal-ewallet">Rp 0</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Input -->
+  <div class="card">
+    <h3 style="margin-bottom: 12px; font-size: 16px;">Tambah Transaksi</h3>
+    <form id="tx-form" onsubmit="addTransaction(event)">
+      <input type="text" id="desc" placeholder="Keterangan (misal: Makan Siang)" required>
+      <input type="number" id="amount" placeholder="Jumlah (Rp)" required>
+      
+      <select id="type">
+        <option value="pengeluaran">Pengeluaran</option>
+        <option value="pemasukan">Pemasukan</option>
+      </select>
+
+      <select id="wallet">
+        <option value="cash">Cash</option>
+        <option value="bca">BCA</option>
+        <option value="ewallet">E-Wallet</option>
+      </select>
+
+      <select id="category">
+        <option value="Makanan">Makanan & Minuman</option>
+        <option value="Transport">Transportasi</option>
+        <option value="Gaji">Gaji / Pendapatan</option>
+        <option value="Lainnya">Lain-lain</option>
+      </select>
+
+      <button type="submit" class="btn-submit">Simpan Transaksi</button>
+    </form>
+  </div>
+
+  <!-- Riwayat Transaksi -->
+  <div class="card">
+    <h3 style="margin-bottom: 12px; font-size: 16px;">Riwayat Transaksi</h3>
+    <ul class="transaction-list" id="tx-list"></ul>
+  </div>
+
+  <script>
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      document.querySelector('.theme-toggle').innerText = isDark ? '☀️ Light Mode' : '🌙 Night Mode';
+    }
+
+    function addTransaction(e) {
+      e.preventDefault();
+      
+      const desc = document.getElementById('desc').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const type = document.getElementById('type').value;
+      const wallet = document.getElementById('wallet').value;
+      const category = document.getElementById('category').value;
+
+      const newTx = {
+        id: Date.now(),
+        desc,
+        amount,
+        type,
+        wallet,
+        category
+      };
+
+      transactions.push(newTx);
+      updateApp();
+      document.getElementById('tx-form').reset();
+    }
+
+    function updateApp() {
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+      
+      const balances = { cash: 0, bca: 0, ewallet: 0 };
+      
+      const listEl = document.getElementById('tx-list');
+      listEl.innerHTML = '';
+
+      transactions.forEach(tx => {
+        if (tx.type === 'pemasukan') {
+          balances[tx.wallet] += tx.amount;
+        } else {
+          balances[tx.wallet] -= tx.amount;
+        }
+
+        const li = document.createElement('li');
+        li.className = 'transaction-item';
+        li.innerHTML = `
+          <div class="tx-info">
+            <h4>${tx.desc}</h4>
+            <p>${tx.category} • <span style="text-transform: capitalize;">${tx.wallet}</span></p>
+          </div>
+          <div class="amount ${tx.type}">
+            ${tx.type === 'pemasukan' ? '+' : '-'} Rp ${tx.amount.toLocaleString('id-ID')}
+          </div>
+        `;
+        listEl.prepend(li);
+      });
+
+      document.getElementById('bal-cash').innerText = `Rp ${balances.cash.toLocaleString('id-ID')}`;
+      document.getElementById('bal-bca').innerText = `Rp ${balances.bca.toLocaleString('id-ID')}`;
+      document.getElementById('bal-ewallet').innerText = `Rp ${balances.ewallet.toLocaleString('id-ID')}`;
+    }
+
+    updateApp();
+  </script>
+</body>
+</html>
