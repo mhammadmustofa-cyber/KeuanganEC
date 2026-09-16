@@ -274,5 +274,26 @@
 
     updateApp();
   </script>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+<script>
+  // Konfigurasi Firebase milikmu
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWVKUMsOgZ_RQkva2sKPT_KatNxkJlrWA",
+    authDomain: "keuangan-english-club.firebaseapp.com",
+    databaseURL: "https://keuangan-english-club-default-rtdb.firebaseio.com",
+    projectId: "keuangan-english-club",
+    storageBucket: "keuangan-english-club.firebasestorage.app",
+    messagingSenderId: "799661651204",
+    appId: "1:799661651204:web:8502ea6bdcbd2efbb94c51",
+    measurementId: "G-TQH2MK7MXZ"
+  };
+
+  // Inisialisasi Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
 </body>
 </html>
