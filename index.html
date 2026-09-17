@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catatan Keuangan Simpel</title>
+  <title>Aksel Keuangan - Catatan Simpel</title>
   <style>
     :root {
-      --bg-color: #f4f6f8;
+      --aksel-yellow: #f0a500;
+      --aksel-yellow-dark: #d99100;
+      --aksel-blue: #0f2b48;
+      --aksel-blue-light: #183e66;
+      --bg-color: #f4f6f9;
       --card-bg: #ffffff;
-      --text-color: #333333;
-      --border-color: #dddddd;
-      --primary: #2563eb;
-      --income: #16a34a;
-      --expense: #dc2626;
+      --text-color: #2c3e50;
+      --text-muted: #7f8c8d;
+      --border-color: #e2e8f0;
+      --income: #10b981;
+      --expense: #ef4444;
     }
     body.dark-mode {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-color: #f1f1f1;
-      --border-color: #333333;
-      --primary: #3b82f6;
+      --bg-color: #0b1727;
+      --card-bg: #132237;
+      --text-color: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
     }
     * {
       box-sizing: border-box;
@@ -30,82 +34,146 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
-      padding: 16px;
+      padding-bottom: 30px;
       max-width: 480px;
       margin: 0 auto;
       transition: background-color 0.3s, color 0.3s;
     }
-    .header {
+    
+    /* Aksel Header */
+    .aksel-header {
+      background: linear-gradient(135deg, var(--aksel-blue) 0%, var(--aksel-blue-light) 100%);
+      color: white;
+      padding: 24px 20px 48px 20px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 4px 12px rgba(15, 43, 72, 0.2);
+    }
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--aksel-yellow);
     }
     .theme-toggle {
-      background: none;
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
-      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      padding: 6px 12px;
       border-radius: 20px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
+      backdrop-filter: blur(4px);
     }
+
+    /* Container overlapping header */
+    .content-container {
+      padding: 0 16px;
+      margin-top: -32px;
+    }
+
     .card {
       background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 18px;
       margin-bottom: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Ringkasan Saldo Ala Aksel */
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .wallets {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      text-align: center;
     }
     .wallet-item {
-      padding: 10px;
+      padding: 12px 8px;
+      border-radius: 12px;
+      background: var(--bg-color);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      text-align: center;
     }
     .wallet-item h4 {
-      font-size: 12px;
-      opacity: 0.7;
+      font-size: 11px;
+      color: var(--text-muted);
     }
     .wallet-item p {
-      font-weight: bold;
-      font-size: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--aksel-blue);
       margin-top: 4px;
     }
+    body.dark-mode .wallet-item p {
+      color: var(--aksel-yellow);
+    }
+
+    /* Form Inputs */
     form {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .input-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
     input, select, button {
       width: 100%;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid var(--border-color);
       background-color: var(--card-bg);
       color: var(--text-color);
       font-size: 14px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--aksel-yellow);
     }
     .btn-submit {
-      background-color: var(--primary);
-      color: white;
+      background: linear-gradient(135deg, var(--aksel-yellow) 0%, var(--aksel-yellow-dark) 100%);
+      color: #0f2b48;
       border: none;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 10px rgba(240, 165, 0, 0.3);
+      transition: transform 0.1s;
+    }
+    .btn-submit:active {
+      transform: scale(0.98);
     }
     .btn-cancel {
-      background-color: #6b7280;
+      background-color: var(--text-muted);
       color: white;
       border: none;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       display: none;
     }
+
+    /* Transactions List */
     .transaction-list {
       list-style: none;
     }
@@ -113,7 +181,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
+      padding: 14px 0;
       border-bottom: 1px solid var(--border-color);
     }
     .transaction-item:last-child {
@@ -121,16 +189,19 @@
     }
     .tx-info h4 {
       font-size: 14px;
+      font-weight: 600;
     }
     .tx-info p {
       font-size: 12px;
-      opacity: 0.6;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
     .tx-right {
       text-align: right;
     }
     .amount {
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 14px;
     }
     .amount.pemasukan {
       color: var(--income);
@@ -148,80 +219,156 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 600;
       padding: 2px 4px;
-      opacity: 0.7;
     }
-    .btn-action:hover {
-      opacity: 1;
+    .btn-delete { color: var(--expense); }
+    .btn-edit { color: var(--aksel-blue); }
+    body.dark-mode .btn-edit { color: var(--aksel-yellow); }
+    .btn-nota { color: #2563eb; }
+
+    /* Modal Nota */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
     }
-    .btn-delete {
-      color: var(--expense);
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
     }
-    .btn-edit {
-      color: var(--primary);
+    .modal-content img {
+      max-width: 100%;
+      max-height: 350px;
+      border-radius: 8px;
+      object-fit: contain;
+      margin-top: 10px;
+    }
+    .btn-close {
+      background: var(--aksel-blue);
+      color: white;
+      border: none;
+      margin-top: 12px;
+      cursor: pointer;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h2>Keuanganku</h2>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙 Night Mode</button>
+  <!-- Aksel Header -->
+  <div class="aksel-header">
+    <div class="header-top">
+      <div class="brand-title">AKSEL Keuangan</div>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙 Mode Malam</button>
+    </div>
+    <p style="font-size: 13px; opacity: 0.9;">Selamat Datang di Catatan Finansial</p>
   </div>
 
-  <!-- Ringkasan Dompet -->
-  <div class="card">
-    <h3 style="margin-bottom: 12px; font-size: 16px;">Ringkasan Dompet</h3>
-    <div class="wallets">
-      <div class="wallet-item">
-        <h4>Cash</h4>
-        <p id="bal-cash">Rp 0</p>
+  <div class="content-container">
+    <!-- Ringkasan Dompet -->
+    <div class="card">
+      <div class="card-title">Ringkasan Saldo</div>
+      <div class="wallets">
+        <div class="wallet-item">
+          <h4>Cash</h4>
+          <p id="bal-cash">Rp 0</p>
+        </div>
+        <div class="wallet-item">
+          <h4>Bank</h4>
+          <p id="bal-bank">Rp 0</p>
+        </div>
+        <div class="wallet-item">
+          <h4>E-Wallet</h4>
+          <p id="bal-ewallet">Rp 0</p>
+        </div>
       </div>
-      <div class="wallet-item">
-        <h4>Bank</h4>
-        <p id="bal-bank">Rp 0</p>
-      </div>
-      <div class="wallet-item">
-        <h4>E-Wallet</h4>
-        <p id="bal-ewallet">Rp 0</p>
-      </div>
+    </div>
+
+    <!-- Form Input Transaksi -->
+    <div class="card">
+      <div class="card-title" id="form-title">Tambah Transaksi Baru</div>
+      <form id="tx-form" onsubmit="saveTransaction(event)">
+        <input type="hidden" id="tx-id">
+        <input type="hidden" id="tx-receipt-data">
+
+        <div class="input-group">
+          <label for="date">Tanggal</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <div class="input-group">
+          <label for="desc">Keterangan</label>
+          <input type="text" id="desc" placeholder="Contoh: Beli Bensin / Bayar Iuran" required>
+        </div>
+
+        <div class="input-group">
+          <label for="amount">Jumlah (Rp)</label>
+          <input type="number" id="amount" placeholder="0" required>
+        </div>
+
+        <div class="input-group">
+          <label for="type">Jenis Transaksi</label>
+          <select id="type">
+            <option value="pengeluaran">Pengeluaran</option>
+            <option value="pemasukan">Pemasukan</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="wallet">Sumber / Dompet</label>
+          <select id="wallet">
+            <option value="cash">Cash</option>
+            <option value="bank">Bank</option>
+            <option value="ewallet">E-Wallet</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="category">Kategori</label>
+          <select id="category">
+            <option value="Makanan">Makanan & Minuman</option>
+            <option value="Transport">Transportasi</option>
+            <option value="Gaji">Gaji / Pendapatan</option>
+            <option value="Lainnya">Lain-lain</option>
+            <option value="Iuran">Iuran</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="receipt">Upload / Lampirkan Nota (Gambar)</label>
+          <input type="file" id="receipt" accept="image/*" onchange="handleImageUpload(event)">
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-submit">Simpan Transaksi</button>
+        <button type="button" id="btn-cancel" class="btn-cancel" onclick="resetForm()">Batal Edit</button>
+      </form>
+    </div>
+
+    <!-- Riwayat Transaksi -->
+    <div class="card">
+      <div class="card-title">Riwayat Transaksi</div>
+      <ul class="transaction-list" id="tx-list"></ul>
     </div>
   </div>
 
-  <!-- Form Input -->
-  <div class="card">
-    <h3 id="form-title" style="margin-bottom: 12px; font-size: 16px;">Tambah Transaksi</h3>
-    <form id="tx-form" onsubmit="saveTransaction(event)">
-      <input type="hidden" id="tx-id">
-      <input type="date" id="date" required>
-      <input type="text" id="desc" placeholder="Keterangan (misal: Makan Siang)" required>
-      <input type="number" id="amount" placeholder="Jumlah (Rp)" required>
-      <select id="type">
-        <option value="pengeluaran">Pengeluaran</option>
-        <option value="pemasukan">Pemasukan</option>
-      </select>
-      <select id="wallet">
-        <option value="cash">Cash</option>
-        <option value="bank">Bank</option>
-        <option value="ewallet">E-Wallet</option>
-      </select>
-      <select id="category">
-        <option value="Makanan">Makanan & Minuman</option>
-        <option value="Transport">Transportasi</option>
-        <option value="Gaji">Gaji / Pendapatan</option>
-        <option value="Lainnya">Lain-lain</option>
-        <option value="Iuran">Iuran</option>
-      </select>
-      <button type="submit" id="btn-submit" class="btn-submit">Simpan Transaksi</button>
-      <button type="button" id="btn-cancel" class="btn-cancel" onclick="resetForm()">Batal Edit</button>
-    </form>
-  </div>
-
-  <!-- Riwayat Transaksi -->
-  <div class="card">
-    <h3 style="margin-bottom: 12px; font-size: 16px;">Riwayat Transaksi</h3>
-    <ul class="transaction-list" id="tx-list"></ul>
+  <!-- Modal View Nota -->
+  <div class="modal" id="receipt-modal">
+    <div class="modal-content">
+      <h4 style="font-size: 16px;">Bukti Nota Transaksi</h4>
+      <img id="modal-img" src="" alt="Nota Transaksi">
+      <button class="btn-close" onclick="closeModal()">Tutup</button>
+    </div>
   </div>
 
   <!-- Firebase SDK -->
@@ -241,20 +388,33 @@
       measurementId: "G-TQH2MK7MXZ"
     };
 
-    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Set tanggal default ke hari ini
+    // Default Tanggal Hari Ini
     document.getElementById('date').valueAsDate = new Date();
 
     function toggleTheme() {
       document.body.classList.toggle('dark-mode');
       const isDark = document.body.classList.contains('dark-mode');
-      document.querySelector('.theme-toggle').innerText = isDark ? '☀️ Light Mode' : '🌙 Night Mode';
+      document.querySelector('.theme-toggle').innerText = isDark ? '☀️ Mode Terang' : '🌙 Mode Malam';
     }
 
-    // Simpan data (Tambah baru atau Update Edit)
+    // Convert file gambar ke Base64 DataURL
+    let currentReceiptBase64 = "";
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function() {
+          currentReceiptBase64 = reader.result;
+          document.getElementById('tx-receipt-data').value = reader.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Simpan Transaksi (Tambah / Update)
     function saveTransaction(e) {
       e.preventDefault();
       const id = document.getElementById('tx-id').value;
@@ -264,6 +424,7 @@
       const type = document.getElementById('type').value;
       const wallet = document.getElementById('wallet').value;
       const category = document.getElementById('category').value;
+      const receipt = document.getElementById('tx-receipt-data').value || "";
 
       const txData = {
         date,
@@ -272,22 +433,21 @@
         type,
         wallet,
         category,
+        receipt,
         timestamp: Date.now()
       };
 
       if (id) {
-        // Edit / Update
         db.ref('transactions/' + id).update(txData);
       } else {
-        // Tambah Baru
         db.ref('transactions').push(txData);
       }
 
       resetForm();
     }
 
-    // Muat data ke form untuk di-edit
-    function editTransaction(id, date, desc, amount, type, wallet, category) {
+    // Load data ke form untuk di-edit
+    function editTransaction(id, date, desc, amount, type, wallet, category, receipt) {
       document.getElementById('tx-id').value = id;
       document.getElementById('date').value = date;
       document.getElementById('desc').value = desc;
@@ -295,30 +455,40 @@
       document.getElementById('type').value = type;
       document.getElementById('wallet').value = wallet;
       document.getElementById('category').value = category;
+      document.getElementById('tx-receipt-data').value = receipt || "";
 
       document.getElementById('form-title').innerText = 'Edit Transaksi';
       document.getElementById('btn-submit').innerText = 'Update Transaksi';
       document.getElementById('btn-cancel').style.display = 'block';
     }
 
-    // Reset Form ke mode tambah
     function resetForm() {
       document.getElementById('tx-id').value = '';
+      document.getElementById('tx-receipt-data').value = '';
       document.getElementById('tx-form').reset();
       document.getElementById('date').valueAsDate = new Date();
-      document.getElementById('form-title').innerText = 'Tambah Transaksi';
+      document.getElementById('form-title').innerText = 'Tambah Transaksi Baru';
       document.getElementById('btn-submit').innerText = 'Simpan Transaksi';
       document.getElementById('btn-cancel').style.display = 'none';
+      currentReceiptBase64 = "";
     }
 
-    // Hapus Transaksi
     function deleteTransaction(id) {
-      if (confirm('Yakin ingin menghapus transaksi ini?')) {
+      if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
         db.ref('transactions/' + id).remove();
       }
     }
 
-    // Listen data Firebase secara Real-time
+    // Modal Nota
+    function showReceipt(receiptData) {
+      document.getElementById('modal-img').src = receiptData;
+      document.getElementById('receipt-modal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('receipt-modal').style.display = 'none';
+    }
+
+    // Firebase Listener
     db.ref('transactions').on('value', (snapshot) => {
       const data = snapshot.val();
       const balances = { cash: 0, bank: 0, ewallet: 0 };
@@ -329,7 +499,6 @@
         Object.keys(data).forEach(key => {
           const tx = data[key];
           
-          // Hitung saldo
           const w = balances[tx.wallet] !== undefined ? tx.wallet : 'bank';
           if (tx.type === 'pemasukan') {
             balances[w] += tx.amount;
@@ -337,8 +506,8 @@
             balances[w] -= tx.amount;
           }
 
-          // Tampilkan tanggal
           const displayDate = tx.date ? tx.date : '-';
+          const hasReceipt = tx.receipt && tx.receipt.length > 0;
 
           const li = document.createElement('li');
           li.className = 'transaction-item';
@@ -352,7 +521,8 @@
                 ${tx.type === 'pemasukan' ? '+' : '-'} Rp ${tx.amount.toLocaleString('id-ID')}
               </div>
               <div class="action-btns">
-                <button class="btn-action btn-edit" onclick="editTransaction('${key}', '${tx.date || ''}', '${tx.desc}', ${tx.amount}, '${tx.type}', '${tx.wallet}', '${tx.category}')">Edit</button>
+                ${hasReceipt ? `<button class="btn-action btn-nota" onclick="showReceipt('${tx.receipt}')">📄 Nota</button>` : ''}
+                <button class="btn-action btn-edit" onclick="editTransaction('${key}', '${tx.date || ''}', '${tx.desc}', ${tx.amount}, '${tx.type}', '${tx.wallet}', '${tx.category}', '${tx.receipt || ''}')">Edit</button>
                 <button class="btn-action btn-delete" onclick="deleteTransaction('${key}')">Hapus</button>
               </div>
             </div>
